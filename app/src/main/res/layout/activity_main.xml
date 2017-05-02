@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:gravity="center_horizontal"
-	tools:context="smile.yuanxiao.notificationmager.MainActivity">
-	
-	<Button
-		android:id="@+id/notification_nomal"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="普通的notification"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="smile.yuanxiao.notificationmager.MainActivity">
+
+    <Button
+        android:id="@+id/notification_nomal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="普通的notification"/>
+
+    <Button
+        android:id="@+id/notification_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载的notification"/>
+
+    <Button
+        android:id="@+id/notification_bigtextstyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="多文字的notification"/>
+
+    <Button
+        android:id="@+id/notification_IndexBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IndexBox的notification"/>
+
+    <Button
+        android:id="@+id/notification_BigBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BigBitmap的notification"/>
+
+    <Button
+        android:id="@+id/notification_FullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FullScreen的notification"/>
 </LinearLayout>
