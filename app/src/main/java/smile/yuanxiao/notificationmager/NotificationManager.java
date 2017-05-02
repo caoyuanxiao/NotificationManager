@@ -1,12 +1,20 @@
 package smile.yuanxiao.notificationmager;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.RemoteInput;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
+
+import static smile.yuanxiao.notificationmager.RemoteReciver.ACTION_REPLY;
 
 /**
  * Created by Smile on 2017/5/2.
@@ -79,8 +87,8 @@ public enum NotificationManager {
      * 点击后展开可显示大段文字内容的通知
      * 只有在首界面才会全部显示
      * 1. 使用类 Android.support.v4.app.NotificationCompat.BigTextStyle
-     2. 在低版本系统上只显示点击前的普通通知样式 如4.4可以点击展开，在4.0系统上就不行
-     3. 点击前后的ContentTitle、ContentText可以不一致，bigText内容可以自动换行 好像最多5行的样子
+     * 2. 在低版本系统上只显示点击前的普通通知样式 如4.4可以点击展开，在4.0系统上就不行
+     * 3. 点击前后的ContentTitle、ContentText可以不一致，bigText内容可以自动换行 好像最多5行的样子
      *
      * @param mContext
      * @param manager
@@ -108,10 +116,10 @@ public enum NotificationManager {
     /**
      * 只有在首界面才会全部显示
      * 注意事项
-     1. 使用类android.support.v4.app.NotificationCompat.InboxStyle
-     2. 每行内容过长时并不会自动换行
-     3. addline可以添加多行 但是多余5行的时候每行高度会有截断
-     4. 同BigTextStyle 低版本上系统只能显示普通样式
+     * 1. 使用类android.support.v4.app.NotificationCompat.InboxStyle
+     * 2. 每行内容过长时并不会自动换行
+     * 3. addline可以添加多行 但是多余5行的时候每行高度会有截断
+     * 4. 同BigTextStyle 低版本上系统只能显示普通样式
      *
      * @param mContext
      * @param manager
@@ -145,45 +153,143 @@ public enum NotificationManager {
 
     /**
      * 1. 使用类android.support.v4.app.NotificationCompat.BigPictureStyle
-     2. style.bigPicture传递的是个bitmap对象 所以也不应该传过大的图 否则会oom
-     3. 同BigTextStyle 低版本上系统只能显示普通样式
+     * 2. style.bigPicture传递的是个bitmap对象 所以也不应该传过大的图 否则会oom
+     * 3. 同BigTextStyle 低版本上系统只能显示普通样式
+     *
      * @param mContext
      * @param manager
      */
-    public void bigPictureStyle(Context mContext, android.app.NotificationManager manager){
+    public void bigPictureStyle(Context mContext, android.app.NotificationManager manager) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder.setContentTitle("BigPictureStyle");
         builder.setContentText("BigPicture演示示例");
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
-        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.ic_launcher_round));
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher_round));
         android.support.v4.app.NotificationCompat.BigPictureStyle style = new android.support.v4.app.NotificationCompat.BigPictureStyle();
         style.setBigContentTitle("BigContentTitle");
         style.setSummaryText("SummaryText");
-        style.bigPicture(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.liushishi));
+        style.bigPicture(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.liushishi));
         builder.setStyle(style);
         builder.setAutoCancel(true);
         //设置点击大图后跳转
         builder.setContentIntent(createPengdingIntent(mContext));
         Notification notification = builder.build();
-        manager.notify(MainActivity.BIG_BITMAP,notification);
+        manager.notify(MainActivity.BIG_BITMAP, notification);
     }
 
-    public void FullScreenNotification(Context mContext, android.app.NotificationManager manager){
+    /**
+     * 1. 此种效果只在5.0以上系统中有效
+     * 2. mainfest中需要添加<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+     * 3. 可能还需要在设置开启横幅通知权限（在设置通知管理中）
+     * 4. 在部分改版rom上可能会直接弹出应用而不是显示横幅
+     *
+     * @param mContext
+     * @param manager
+     */
+    public void FullScreenNotification(Context mContext, android.app.NotificationManager manager) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder.setContentTitle("横幅通知");
         builder.setContentText("请在设置通知管理中开启消息横幅提醒权限");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.ic_launcher_round));
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher_round));
 
         builder.setContentIntent(createPengdingIntent(mContext));
         //这句是重点
-        builder.setFullScreenIntent(createPengdingIntent(mContext),true);
+        builder.setFullScreenIntent(createPengdingIntent(mContext), true);
         builder.setAutoCancel(true);
         Notification notification = builder.build();
-        manager.notify(MainActivity.HEADED_UP,notification);
+        manager.notify(MainActivity.HEADED_UP, notification);
     }
+
+
+    public void MediaStyle(Context mContext, android.app.NotificationManager manager, Activity activity) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setContentTitle("MediaStyle");
+        builder.setContentText("Song Title");
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher_round));
+        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        PendingIntent pIntent = createPengdingIntent(mContext);
+        builder.setContentIntent(pIntent);
+        //第一个参数是图标资源id 第二个是图标显示的名称，第三个图标点击要启动的PendingIntent
+        builder.addAction(R.mipmap.ic_previous_white, "", null);
+        builder.addAction(R.mipmap.ic_stop_white, "", null);
+        builder.addAction(R.mipmap.ic_play_arrow_white_18dp, "", pIntent);
+        builder.addAction(R.mipmap.ic_next_white, "", null);
+        NotificationCompat.MediaStyle style = new NotificationCompat.MediaStyle();
+        style.setMediaSession(new MediaSessionCompat(activity, "MediaSession",
+                new ComponentName(mContext, Intent.ACTION_MEDIA_BUTTON), null).getSessionToken());
+        //CancelButton在5.0以下的机器有效
+        style.setCancelButtonIntent(pIntent);
+        style.setShowCancelButton(true);
+        //设置要现实在通知右方的图标 最多三个
+        style.setShowActionsInCompactView(2, 3);
+        builder.setStyle(style);
+        builder.setShowWhen(false);
+        Notification notification = builder.build();
+        manager.notify(MainActivity.MEDIA_STYLE, notification);
+    }
+
+    public static final String KEY_TEXT_REPLY = "key_text_reply";
+
+    /**
+     * 快速回复仅仅针对android7.0以及以上的版本
+     *
+     * @param mContext
+     * @param manager
+     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
+    public void QuickReplyMessage(Context mContext, android.app.NotificationManager manager) {
+// Key for the string that's delivered in the action's intent.
+
+        /**
+         * 创建Broadcast的PendingIntent
+         */
+        String replyLabel = "回复";
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyLabel)
+                .build();
+        Intent replyIntent = new Intent(ACTION_REPLY).setClass(mContext, RemoteReciver.class);
+        replyIntent.putExtra("address", "13337227273");
+        PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, 10, replyIntent, PendingIntent
+                .FLAG_UPDATE_CURRENT);
+
+        // Create the reply action and add the remote input.
+        Notification.Action action =
+                new Notification.Action.Builder(R.mipmap.ic_play_arrow_white_18dp,
+                        replyLabel, replyPendingIntent)
+                        .addRemoteInput(remoteInput)
+                        .build();
+        /**
+         * 创建Activity的PendingIntent
+         */
+        Intent threadIntent = new Intent(mContext, NotificationActivity.class);
+        threadIntent.putExtra("address", "13337227273");
+        final PendingIntent threadPI = PendingIntent.getActivity(mContext, 11, threadIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        /**
+        * 创建Service的PendingIntent
+         */
+        Intent intent = new Intent(mContext, MediaService.class);
+        intent.putExtra("command", 10);
+        PendingIntent servicePendingIntent = PendingIntent.getService(mContext, 12, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Build the notification and add the action.
+        Notification newMessageNotification =
+                new Notification.Builder(mContext)
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setContentTitle("快速回复")
+                        .setContentText("测试快速回复")
+                        .addAction(action)
+                        .setContentIntent(threadPI)
+                        .setAutoCancel(true)
+                        .addAction(R.drawable.ic_call_white_24dp, "拨号", servicePendingIntent)
+                        .build();
+
+        manager.notify(10, newMessageNotification);
+    }
+
 
     public PendingIntent createPengdingIntent(Context mContext) {
         Intent intent = new Intent(mContext, NotificationActivity.class);

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="smile.yuanxiao.notificationmager">
-	<uses-permission android:name="android.permission.VIBRATE" />
+	
+	<uses-permission android:name="android.permission.VIBRATE"/>
 	<uses-permission android:name="android.permission.FLASHLIGHT"/>
 	
 	<application
@@ -19,6 +20,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".NotificationActivity"></activity>
+		
+		<service android:name=".MediaService"></service>
+		<receiver android:name=".RemoteReciver">
+			<intent-filter>
+				<action android:name="QUIKLY_REPLY"></action>
+			</intent-filter>
+		</receiver>
 	</application>
 
 </manifest>

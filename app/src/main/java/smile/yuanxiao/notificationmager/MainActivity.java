@@ -2,9 +2,12 @@ package smile.yuanxiao.notificationmager;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -15,7 +18,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int BIGTEXTSTYLE = 3;
     public static final int INDEX_BOX = 4;
     public static final int BIG_BITMAP = 5;
-    public static final int HEADED_UP=6;
+    public static final int HEADED_UP = 6;
+    public static final int MEDIA_STYLE = 7;
 
 
     android.app.NotificationManager manager;
@@ -48,11 +52,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.notification_IndexBox).setOnClickListener(this);
         findViewById(R.id.notification_BigBitmap).setOnClickListener(this);
         findViewById(R.id.notification_FullScreen).setOnClickListener(this);
+        findViewById(R.id.notification_Mediatype).setOnClickListener(this);
+        findViewById(R.id.notification_custom).setOnClickListener(this);
+        findViewById(R.id.notification_quik_reply).setOnClickListener(this);
     }
 
     Notification notification;
     RemoteViews mRemoteViews;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -90,6 +98,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 NotificationManager.NOTIFICATION_MANAGER.bigPictureStyle(this, manager);
                 break;
             case R.id.notification_FullScreen:
+                NotificationManager.NOTIFICATION_MANAGER.FullScreenNotification(this, manager);
+                break;
+            case R.id.notification_Mediatype:
+                NotificationManager.NOTIFICATION_MANAGER.MediaStyle(this, manager, this);
+                break;
+            case R.id.notification_custom:
+                Intent intent=new Intent(MainActivity.this,MediaService.class);
+                startService(intent);
+                break;
+            case R.id.notification_quik_reply:
+                NotificationManager.NOTIFICATION_MANAGER.QuickReplyMessage(this,manager);
                 break;
         }
 
