@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="smile.yuanxiao.notificationmager.MainActivity">
+    tools:context="smile.yuanxiao.notificationmager.activity.MainActivity">
 
     <Button
         android:id="@+id/notification_nomal"

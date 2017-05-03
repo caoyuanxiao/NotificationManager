@@ -1,4 +1,4 @@
-package smile.yuanxiao.notificationmager;
+package smile.yuanxiao.notificationmager.Receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.RemoteInput;
 import android.widget.Toast;
 
-import static smile.yuanxiao.notificationmager.NotificationManager.KEY_TEXT_REPLY;
+import static smile.yuanxiao.notificationmager.manager.NotificationManager.KEY_TEXT_REPLY;
 
 /**
  * Created by Smile on 2017/5/2.

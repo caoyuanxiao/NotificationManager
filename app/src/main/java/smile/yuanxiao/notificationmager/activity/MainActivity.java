@@ -1,4 +1,4 @@
-package smile.yuanxiao.notificationmager;
+package smile.yuanxiao.notificationmager.activity;
 
 import android.app.Notification;
 import android.content.Context;
@@ -11,6 +11,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import smile.yuanxiao.notificationmager.service.MediaService;
+import smile.yuanxiao.notificationmager.manager.NotificationManager;
+import smile.yuanxiao.notificationmager.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int TYPE_NOMAL = 1;

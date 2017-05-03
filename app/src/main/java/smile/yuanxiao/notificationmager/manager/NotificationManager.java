@@ -1,4 +1,4 @@
-package smile.yuanxiao.notificationmager;
+package smile.yuanxiao.notificationmager.manager;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -14,7 +14,13 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import static smile.yuanxiao.notificationmager.RemoteReciver.ACTION_REPLY;
+import smile.yuanxiao.notificationmager.R;
+import smile.yuanxiao.notificationmager.Receiver.RemoteReciver;
+import smile.yuanxiao.notificationmager.activity.MainActivity;
+import smile.yuanxiao.notificationmager.activity.NotificationActivity;
+import smile.yuanxiao.notificationmager.service.MediaService;
+
+import static smile.yuanxiao.notificationmager.Receiver.RemoteReciver.ACTION_REPLY;
 
 /**
  * Created by Smile on 2017/5/2.

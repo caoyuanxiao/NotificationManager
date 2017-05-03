@@ -1,8 +1,10 @@
-package smile.yuanxiao.notificationmager;
+package smile.yuanxiao.notificationmager.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import smile.yuanxiao.notificationmager.R;
 
 /**
  * Created by Smile on 2017/5/2.

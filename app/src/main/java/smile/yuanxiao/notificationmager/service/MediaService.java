@@ -1,4 +1,4 @@
-package smile.yuanxiao.notificationmager;
+package smile.yuanxiao.notificationmager.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,6 +9,9 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
+
+import smile.yuanxiao.notificationmager.R;
+import smile.yuanxiao.notificationmager.activity.MainActivity;
 
 public class MediaService extends Service {
     public static final int CommandPlay = 1;
