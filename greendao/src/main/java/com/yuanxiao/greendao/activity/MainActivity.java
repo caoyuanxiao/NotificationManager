@@ -1,13 +1,15 @@
-package com.yuanxiao.greendao;
+package com.yuanxiao.greendao.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.yuanxiao.greendao.R;
 import com.yuanxiao.greendao.application.MyApplication;
 import com.yuanxiao.greendao.greendao.entity.User;
 import com.yuanxiao.greendao.greendao.gen.DaoSession;
 import com.yuanxiao.greendao.greendao.gen.UserDao;
+import com.yuanxiao.greendao.utils.MyLog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.query_user).setOnClickListener(this);
         findViewById(R.id.insert_user).setOnClickListener(this);
         findViewById(R.id.delete_user).setOnClickListener(this);
+
+
+        MyLog.showLog();
     }
 
     @Override
@@ -38,14 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //userDao.insertOrReplace(new User(Long.parseLong("2"),"1234", "1234"));
                 // userDao.insertOrReplace(new User(Long.parseLong("3"),"123", "1234567"));
                 HashSet<User> mSet = new HashSet<>();
-                mSet.add(new User(Long.parseLong("1"), "123", "1234",1,1));
-                mSet.add(new User(Long.parseLong("2"), "1234", "1234",2,1));
-                mSet.add(new User(Long.parseLong("3"), "12345", "12345",3,1));
+                mSet.add(new User(Long.parseLong("1"), "123", "1234", 1, 1));
+                mSet.add(new User(Long.parseLong("2"), "1234", "1234", 2, 1));
+                mSet.add(new User(Long.parseLong("3"), "12345", "12345", 3, 1));
                 userDao.insertOrReplaceInTx(mSet);
 
                 List<User> users = new ArrayList<>();
-                users.add(new User(Long.parseLong("4"), "123", "123456",4,1));
-                users.add(new User(Long.parseLong("5"), "123", "1234",5,1));
+                users.add(new User(Long.parseLong("4"), "123", "123456", 4, 1));
+                users.add(new User(Long.parseLong("5"), "123", "1234", 5, 1));
                 userDao.insertOrReplaceInTx(users);
 
                 break;
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 List<User> list = userDao.queryBuilder().where(UserDao.Properties.Username.eq("123"), UserDao.Properties.Password.eq("1234")).orderDesc(UserDao.Properties.Id).list();
 
                 for (User user : list) {
-                    System.out.println("查询数据库："+user.toString());
+                    System.out.println("查询数据库：" + user.toString());
                 }
 
                 List<User> user1 = userDao.queryBuilder().orderDesc(UserDao.Properties.Id).list();

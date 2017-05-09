@@ -5,11 +5,11 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * Created by Smile on 2017/5/4.
+ * Created by kc on 17/5/9.
  */
+
 @Entity
 public class User {
-
     @Id(autoincrement = true)
     private Long id;
 
@@ -17,7 +17,6 @@ public class User {
     private String Password;
     private int age;
     private int date;
-    
     @Generated(hash = 1244372227)
     public User(Long id, String Username, String Password, int age, int date) {
         this.id = id;
@@ -47,15 +46,6 @@ public class User {
     public void setPassword(String Password) {
         this.Password = Password;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", Username='" + Username + '\'' +
-                ", Password='" + Password + '\'' +
-                '}';
-    }
     public int getAge() {
         return this.age;
     }
@@ -68,5 +58,4 @@ public class User {
     public void setDate(int date) {
         this.date = date;
     }
-
 }

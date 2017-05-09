@@ -3,26 +3,69 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.yuanxiao.greendao"
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-    buildTypes {
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            try {
+                keyAlias 'greendao'
+                keyPassword 'cc123456'
+                storeFile file('./keystore/greendao.jks')
+                storePassword 'cc123456'
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
         }
     }
+
+
+    //程序在buid的时候，会执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
+    lintOptions {
+        abortOnError false
+    }
+
+    //编译类型
+    buildTypes {
+        release {
+            //是否开启混淆
+            minifyEnabled false
+            //使用打包的签名文件位置
+            signingConfig signingConfigs.release
+            //自动生成buildConfig 里面包含了基本
+            buildConfigField "boolean", "IS_SHOW_LOG", NOT_SHOW_LOG
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+        debug {
+            minifyEnabled false
+            buildConfigField "boolean", "IS_SHOW_LOG", SHOW_LOG
+        }
+
+    }
+
+    productFlavors {
+        baidu{
+
+        }
+        xiaomi {
+
+        }
+    }
+
 }
+
 
 greendao {
     schemaVersion 6//数据库版本号
@@ -34,12 +77,12 @@ greendao {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+    //  testCompile 'junit:junit:4.12'
 
     //greendao依赖
     compile 'org.greenrobot:greendao:3.2.0'

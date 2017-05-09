@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     
-    tools:context="com.yuanxiao.greendao.MainActivity">
+    tools:context="com.yuanxiao.greendao.activity.MainActivity">
 
     <Button
         android:text="插入数据"
